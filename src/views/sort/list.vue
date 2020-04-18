@@ -8,36 +8,9 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="用户名">
-        <template slot-scope="scope">
-          {{ scope.row.Sortname }}
-        </template>
-      </el-table-column>
-      <el-table-column label="昵称">
-        <template slot-scope="scope">
-          <span>{{ scope.row.nickname }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="邮箱" min-width="100">
-        <template slot-scope="scope">
-          {{ scope.row.email }}
-        </template>
-      </el-table-column>
-      <el-table-column label="年龄">
-        <template slot-scope="scope">
-          {{ scope.row.age }}
-        </template>
-      </el-table-column>
-      <el-table-column label="电话号码">
-        <template slot-scope="scope">
-          {{ scope.row.telephone }}
-        </template>
-      </el-table-column>
-      <el-table-column label="生日">
-        <template slot-scope="scope">
-          <span>{{ scope.row.birthday }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="name" label="分类名称" />
+      <el-table-column prop="alias" label="分类别名" />
+      <el-table-column prop="description" label="分类描述" />
       <el-table-column prop="createdAt" label="创建时间">
         <template slot-scope="scope">
           <i class="el-icon-time" />
@@ -67,7 +40,7 @@
 </template>
 
 <script>
-import { getSortList, getSort, deleteSort, addSort, editSort } from '@/api/Sorts'
+import { getSortList, getSort, deleteSort, addSort, editSort } from '@/api/sorts'
 export default {
   filters: {
     statusFilter(status) {

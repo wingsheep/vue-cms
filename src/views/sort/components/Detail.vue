@@ -1,23 +1,14 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="用户名">
-        <el-input v-model="form.username" />
+      <el-form-item label="分类名称">
+        <el-input v-model="form.name" />
       </el-form-item>
-      <el-form-item label="密码">
-        <el-input v-model="form.password" />
+      <el-form-item label="分类别名">
+        <el-input v-model="form.alias" />
       </el-form-item>
-      <el-form-item label="昵称">
-        <el-input v-model="form.nickname" />
-      </el-form-item>
-      <el-form-item label="邮箱">
-        <el-input v-model="form.email" />
-      </el-form-item>
-      <el-form-item label="电话号码">
-        <el-input v-model="form.telephone" />
-      </el-form-item>
-      <el-form-item label="生日">
-        <el-date-picker v-model="form.birthday" type="date" />
+      <el-form-item label="分类描述">
+        <el-input v-model="form.description" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">保存</el-button>
@@ -28,10 +19,10 @@
 </template>
 
 <script>
-import { getUser, addUser, editUser } from '@/api/users'
+import { getSort, addSort, editSort } from '@/api/sorts'
 
 export default {
-  name: 'UserDetail',
+  name: 'SortDetail',
   props: {
     isEdit: {
       type: Boolean,
@@ -41,14 +32,9 @@ export default {
   data() {
     return {
       form: {
-        username: '',
-        nickname: '',
-        email: '',
-        password: '',
-        age: undefined,
-        delivery: false,
-        telephone: '',
-        birthday: ''
+        name: '',
+        alias: '',
+        description: ''
       },
       copyForm: {}
     }
@@ -61,7 +47,7 @@ export default {
   },
   methods: {
     fetchData(id) {
-      getUser(id).then(res => {
+      getSort(id).then(res => {
         this.form = res.data
         this.copyForm = JSON.parse(JSON.stringify(this.form))
       }).catch(err => {
@@ -69,20 +55,20 @@ export default {
       })
     },
     onSubmit() {
-      this.isEdit ? this.editUser() : this.addUser()
+      this.isEdit ? this.editSort() : this.addSort()
     },
-    addUser() {
+    addSort() {
       const params = this.form
-      addUser(params).then(res => {
+      addSort(params).then(res => {
         this.$message('submit!')
       }).catch(err => {
         console.log(err)
       })
     },
-    editUser() {
+    editSort() {
       console.log(params)
       const params = this.form
-      editUser(params).then(res => {
+      editSort(params).then(res => {
         this.$message('submit!')
       }).catch(err => {
         console.log(err)

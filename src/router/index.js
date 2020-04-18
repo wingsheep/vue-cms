@@ -83,6 +83,34 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/sort',
+    component: Layout,
+    redirect: '/sort/list',
+    name: 'Sort',
+    meta: { title: '文章分类', icon: 'sort' },
+    children: [
+      {
+        path: 'list',
+        name: 'sortList',
+        component: () => import('@/views/sort/list'),
+        meta: { title: '分类列表', icon: 'list' }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/sort/create'),
+        name: 'CreateSort',
+        meta: { title: '新增分类', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/sort/edit'),
+        name: 'EditSort',
+        meta: { title: '编辑分类', noCache: true, activeMenu: '/sort/edit' },
+        hidden: true
+      }
+    ]
+  },
 
   {
     path: '/article',

@@ -1,13 +1,13 @@
 <template>
-  <user-detail :is-edit="true" />
+  <detail :is-edit="true" />
 </template>
 
 <script>
-import UserDetail from './components/UserDetail'
+import Detail from './components/Detail'
 
 export default {
-  name: 'EditUser',
-  components: { UserDetail }
+  name: 'CreateUser',
+  components: { Detail }
 }
 </script>
 
