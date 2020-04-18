@@ -60,9 +60,6 @@
           <el-button type="text" @click="deleteUser(scope.row.id)">
             删除
           </el-button>
-          <el-button type="text" @click="TOGGLE_SIDEBAR('1')">
-            test
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -71,7 +68,6 @@
 
 <script>
 import { getUserList, getUser, deleteUser, addUser, editUser } from '@/api/users'
-import { mapState, mapMutations } from 'vuex'
 export default {
   filters: {
     statusFilter(status) {
@@ -93,21 +89,10 @@ export default {
       singleUser: {}
     }
   },
-  computed: {
-    ...mapState({
-      count: state => state.user.name
-    }),
-    ...mapState('user', [
-      'name'
-    ])
-  },
   created() {
     this.getUserList()
   },
   methods: {
-    ...mapMutations('app', [
-      'TOGGLE_SIDEBAR'
-    ]),
     getUser(id) {
       getUser(id).then(res => {
         this.singleUser = res.data[0]
