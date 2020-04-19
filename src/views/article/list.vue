@@ -1,53 +1,28 @@
 <template>
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="ID" width="80">
+      <el-table-column min-width="180px" prop="title" label="文章标题" />
+      <el-table-column min-width="180px" prop="views" label="浏览量" />
+      <el-table-column min-width="180px" prop="sort" label="文章分类" />
+      <el-table-column min-width="180px" prop="label" label="文章标签" />
+      <el-table-column min-width="180px" prop="comment" label="评论总数" />
+      <el-table-column min-width="180px" prop="date" label="发表时间">
+        <template slot-scope="scoped">
+          {{ scoped.row.date | formatDate }}
+        </template>
+      </el-table-column>
+      <el-table-column min-width="180px" prop="like_count" label="点赞数量" />
+
+      <el-table-column min-width="100px" prop="op" label="操作">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="180px" align="center" label="Date">
-        <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="120px" align="center" label="Author">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="100px" label="Importance">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon" />
-        </template>
-      </el-table-column>
-
-      <el-table-column class-name="status-col" label="Status" width="110">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | statusFilter">
-            {{ row.status }}
-          </el-tag>
-        </template>
-      </el-table-column>
-
-      <el-table-column min-width="300px" label="Title">
-        <template slot-scope="{row}">
-          <router-link :to="'/example/edit/'+row.id" class="link-type">
-            <span>{{ row.title }}</span>
-          </router-link>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="Actions" width="120">
-        <template slot-scope="scope">
-          <router-link :to="'/example/edit/'+scope.row.id">
-            <el-button type="primary" size="small" icon="el-icon-edit">
-              Edit
+          <router-link :to="'/user/edit/'+scope.row.id">
+            <el-button type="text">
+              编辑
             </el-button>
           </router-link>
+          <el-button type="text" @click="deleteArticle(scope.row.id)">
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -57,7 +32,8 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
+import { getArticleList, getArticle, deleteArticle, addArticle, editArticle } from '@/api/article'
+
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -85,17 +61,19 @@ export default {
     }
   },
   created() {
-    // this.getList()
+    this.getArticleList()
   },
   methods: {
-    getList() {
+    getArticleList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-        this.listLoading = false
+      getArticleList().then(res => {
+        if (res.result) {
+          this.list = res.data
+          this.listLoading = false
+        }
       })
-    }
+    },
+
   }
 }
 </script>

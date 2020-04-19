@@ -1,41 +1,41 @@
+
 import request from '@/utils/request'
 
-export function fetchList(query) {
-  return request({
-    url: '/vue-element-admin/article/list',
-    method: 'get',
-    params: query
-  })
-}
+const url = '/api/v1/articles'
 
-export function fetchArticle(id) {
+export function addArticle(params) {
   return request({
-    url: '/vue-element-admin/article/detail',
-    method: 'get',
-    params: { id }
-  })
-}
-
-export function fetchPv(pv) {
-  return request({
-    url: '/vue-element-admin/article/pv',
-    method: 'get',
-    params: { pv }
-  })
-}
-
-export function createArticle(data) {
-  return request({
-    url: '/vue-element-admin/article/create',
+    url: `${url}`,
     method: 'post',
-    data
+    data: params
   })
 }
 
-export function updateArticle(data) {
+export function deleteArticle(id) {
   return request({
-    url: '/vue-element-admin/article/update',
-    method: 'post',
-    data
+    url: `${url}/${id}`,
+    method: 'delete'
+  })
+}
+
+export function editArticle(params) {
+  return request({
+    url: `${url}/${params.id}`,
+    method: 'put',
+    data: params
+  })
+}
+
+export function getArticle(id) {
+  return request({
+    url: `${url}/${id}`,
+    method: 'get'
+  })
+}
+
+export function getArticleList() {
+  return request({
+    url: url,
+    method: 'get'
   })
 }

@@ -11,19 +11,19 @@
       <el-table-column prop="name" label="标签名称" />
       <el-table-column prop="alias" label="标签别名" />
       <el-table-column prop="description" label="标签描述" />
-      <el-table-column prop="createdAt" label="创建时间">
+      <el-table-column min-width="100px" prop="createdAt" label="创建时间">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.createdAt | formatDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="updatedAt" label="修改时间">
+      <el-table-column min-width="100px" prop="updatedAt" label="修改时间">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.updatedAt | formatDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="op" label="操作">
+      <el-table-column min-width="100px" prop="op" label="操作">
         <template slot-scope="scope">
           <router-link :to="'/Label/edit/'+scope.row.id">
             <el-button type="text">
