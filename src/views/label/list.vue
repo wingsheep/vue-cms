@@ -8,9 +8,9 @@
       fit
       highlight-current-row
     >
-      <el-table-column prop="name" label="分类名称" />
-      <el-table-column prop="alias" label="分类别名" />
-      <el-table-column prop="description" label="分类描述" />
+      <el-table-column prop="name" label="标签名称" />
+      <el-table-column prop="alias" label="标签别名" />
+      <el-table-column prop="description" label="标签描述" />
       <el-table-column prop="createdAt" label="创建时间">
         <template slot-scope="scope">
           <i class="el-icon-time" />
@@ -25,12 +25,12 @@
       </el-table-column>
       <el-table-column prop="op" label="操作">
         <template slot-scope="scope">
-          <router-link :to="'/Sort/edit/'+scope.row.id">
+          <router-link :to="'/Label/edit/'+scope.row.id">
             <el-button type="text">
               编辑
             </el-button>
           </router-link>
-          <el-button type="text" @click="deleteSort(scope.row.id)">
+          <el-button type="text" @click="deleteLabel(scope.row.id)">
             删除
           </el-button>
         </template>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { getSortList, getSort, deleteSort, addSort, editSort } from '@/api/sorts'
+import { getLabelList, getLabel, deleteLabel, addLabel, editLabel } from '@/api/labels'
 export default {
   filters: {
     statusFilter(status) {
@@ -56,47 +56,47 @@ export default {
     return {
       list: null,
       listLoading: true,
-      singleSort: {}
+      singleLabel: {}
     }
   },
   created() {
-    this.getSortList()
+    this.getLabelList()
   },
   methods: {
-    getSort(id) {
-      getSort(id).then(res => {
-        this.singleSort = res.data[0]
+    getLabel(id) {
+      getLabel(id).then(res => {
+        this.singleLabel = res.data[0]
       })
     },
-    addSort(params) {
-      addSort(params).then(res => {
+    addLabel(params) {
+      addLabel(params).then(res => {
         if (res.data) {
           this.$message.success('新增成功')
-          this.getSortList()
+          this.getLabelList()
         }
       })
     },
-    editSort(params) {
-      editSort(params).then(res => {
+    editLabel(params) {
+      editLabel(params).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
-          this.getSortList()
+          this.getLabelList()
         }
       })
     },
-    getSortList() {
+    getLabelList() {
       this.listLoading = true
-      getSortList().then(res => {
+      getLabelList().then(res => {
         this.list = res.data
         this.listLoading = false
       })
     },
-    deleteSort(id) {
+    deleteLabel(id) {
       this.listLoading = true
-      deleteSort(id).then(res => {
+      deleteLabel(id).then(res => {
         if (res.data) {
           this.$message.success('删除成功')
-          this.getSortList()
+          this.getLabelList()
         }
       })
     }

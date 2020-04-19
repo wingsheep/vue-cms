@@ -88,7 +88,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/sort/list',
     name: 'Sort',
-    meta: { title: '文章分类', icon: 'sort' },
+    meta: { title: '分类管理', icon: 'sort' },
     children: [
       {
         path: 'list',
@@ -107,6 +107,34 @@ export const constantRoutes = [
         component: () => import('@/views/sort/edit'),
         name: 'EditSort',
         meta: { title: '编辑分类', noCache: true, activeMenu: '/sort/edit' },
+        hidden: true
+      }
+    ]
+  },
+  {
+    path: '/label',
+    component: Layout,
+    redirect: '/label/list',
+    name: 'Label',
+    meta: { title: '标签管理', icon: 'label' },
+    children: [
+      {
+        path: 'list',
+        name: 'labelList',
+        component: () => import('@/views/label/list'),
+        meta: { title: '标签列表', icon: 'list' }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/label/create'),
+        name: 'CreateLabel',
+        meta: { title: '新增标签', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/label/edit'),
+        name: 'EditLabel',
+        meta: { title: '编辑标签', noCache: true, activeMenu: '/label/edit' },
         hidden: true
       }
     ]

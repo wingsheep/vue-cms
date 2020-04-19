@@ -102,7 +102,7 @@ export default {
       addUser(params).then(res => {
         if (res.data) {
           this.$message.success('新增成功')
-          this.fetchData()
+          this.getUserList()
         }
       })
     },
@@ -110,7 +110,7 @@ export default {
       editUser(params).then(res => {
         if (res.data) {
           this.$message.success('编辑成功')
-          this.fetchData()
+          this.getUserList()
         }
       })
     },
@@ -126,7 +126,7 @@ export default {
       deleteUser(id).then(res => {
         if (res.data) {
           this.$message.success('删除成功')
-          this.fetchData()
+          this.getUserList()
         }
       })
     }
