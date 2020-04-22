@@ -1,8 +1,11 @@
 <template>
   <div class="createPost-container">
+      <el-form ref="postForm" :model="postForm" :rules="rules">
+
     <Sticky>
       <div class="btns">
         <CommentDropdown v-model="postForm.comment_disabled" />
+        <SourceUrlDropdown v-model="postForm.image_url" />
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
           发布
         </el-button>
@@ -11,7 +14,6 @@
         </el-button>
       </div>
     </Sticky>
-    <el-form ref="postForm" :model="postForm" :rules="rules">
       <div class="createPost-main-container">
         <el-row>
           <el-col :span="24">
@@ -29,24 +31,31 @@
 
             <div class="postInfo-container">
               <el-row>
-                <el-col :span="8">
+                <el-col :xs="24" :lg="6" :md="12">
                   <el-form-item label-width="60px" label="作者:" prop="author">
-                    <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入">
+                    <el-select v-model="postForm.author" style="width: 100%" filterable default-first-option remote placeholder="请输入">
                       <el-option v-for="(item,index) in userList" :key="item+index" :label="item.username" :value="item.id" />
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :xs="24" :lg="6" :md="12">
                   <el-form-item label-width="60px" label="标签:" prop="label">
-                    <el-select v-model="postForm.label" :remote-method="getRemoteLabelList" filterable default-first-option remote placeholder="请输入">
+                    <el-select v-model="postForm.label" style="width: 100%" filterable default-first-option remote placeholder="请输入">
                       <el-option v-for="(item,index) in labelList" :key="item+index" :label="item.name" :value="item.id" />
                     </el-select>
                   </el-form-item>
                 </el-col>
+                <el-col :xs="24" :lg="6" :md="12">
+                  <el-form-item label-width="60px" label="分类:" prop="sort">
+                    <el-select v-model="postForm.sort" style="width: 100%" filterable default-first-option remote placeholder="请输入">
+                      <el-option v-for="(item,index) in sortList" :key="item+index" :label="item.name" :value="item.id" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
 
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="发布日期:" prop="date">
-                    <el-date-picker v-model="postForm.date" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" />
+                <el-col :xs="24" :lg="6" :md="12">
+                  <el-form-item label-width="60px" label="日期:" prop="date">
+                    <el-date-picker v-model="postForm.date" style="width: 100%" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -66,12 +75,12 @@
 </template>
 
 <script>
-import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/SingleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { CommentDropdown, SourceUrlDropdown } from './Dropdown'
 import { getLabelList } from '@/api/labels'
+import { getSortList } from '@/api/sorts'
 import { getUserList } from '@/api/users'
 import { getArticle, addArticle, editArticle } from '@/api/article'
 
@@ -80,7 +89,7 @@ const defaultForm = {
   title: '', // 文章题目
   content: '', // 文章内容
   description: '', // 文章摘要
-  image_uri: '', // 文章图片
+  image_url: 'https://cdn.jsdelivr.net/gh/Thawsoar/FigureBed@master/img/20200418224757.png', // 文章图片
   id: undefined,
   comment_disabled: false,
   date: new Date()
@@ -88,7 +97,7 @@ const defaultForm = {
 
 export default {
   name: 'ArticleDetail',
-  components: { Tinymce, MDinput, Upload, Sticky, CommentDropdown, SourceUrlDropdown },
+  components: { MDinput, Upload, Sticky, CommentDropdown, SourceUrlDropdown },
   props: {
     isEdit: {
       type: Boolean,
@@ -112,6 +121,7 @@ export default {
         content: [{ validator: validateRequire }]
       },
       labelList: [],
+      sortList: [],
       tempRoute: {}
     }
   },
@@ -121,6 +131,9 @@ export default {
     }
   },
   created() {
+    this.getRemoteUserList()
+    this.getRemoteLabelList()
+    this.getRemoteSortList()
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
@@ -128,16 +141,9 @@ export default {
   },
   methods: {
     fetchData(id) {
-      fetchArticle(id).then(response => {
+      getArticle(id).then(response => {
         this.postForm = response.data
-
-        // just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.description += `   Article Id:${this.postForm.id}`
-
-        // set tagsview title
-        this.setTagsViewTitle()
-
+        // this.setTagsViewTitle()
         // set page title
         this.setPageTitle()
       }).catch(err => {
@@ -206,6 +212,13 @@ export default {
       getLabelList().then(res => {
         if (res.data) {
           this.labelList = res.data
+        }
+      })
+    },
+    getRemoteSortList(query) {
+      getSortList().then(res => {
+        if (res.data) {
+          this.sortList = res.data
         }
       })
     }

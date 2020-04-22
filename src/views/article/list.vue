@@ -15,7 +15,7 @@
 
       <el-table-column min-width="100px" prop="op" label="操作">
         <template slot-scope="scope">
-          <router-link :to="'/user/edit/'+scope.row.id">
+          <router-link :to="'/article/edit/'+scope.row.id">
             <el-button type="text">
               编辑
             </el-button>
@@ -27,18 +27,18 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" /> -->
   </div>
 </template>
 
 <script>
 import { getArticleList, getArticle, deleteArticle, addArticle, editArticle } from '@/api/article'
 
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+// import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'ArticleList',
-  components: { Pagination },
+  // components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -73,7 +73,15 @@ export default {
         }
       })
     },
-
+    deleteArticle(id) {
+      this.listLoading = true
+      deleteArticle(id).then(res => {
+        if (res.result) {
+          this.list = res.data
+          this.listLoading = false
+        }
+      })
+    }
   }
 }
 </script>
