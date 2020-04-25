@@ -89,7 +89,7 @@ const defaultForm = {
   description: '', // 文章摘要
   label: [], // 标签
   sort: [], // 分类
-  image_url: 'https://cdn.jsdelivr.net/gh/Thawsoar/FigureBed@master/img/20200418224757.png', // 文章图片
+  image_url: 'https://cdn.jsdelivr.net/gh/Thawsoar/FigureBed@master/img/20200425144136.png', // 文章图片
   id: undefined,
   comment_disabled: false,
   date: new Date()
