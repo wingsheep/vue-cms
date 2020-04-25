@@ -3,8 +3,16 @@
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column min-width="180px" prop="title" label="文章标题" />
       <el-table-column min-width="180px" prop="views" label="浏览量" />
-      <el-table-column min-width="180px" prop="sort" label="文章分类" />
-      <el-table-column min-width="180px" prop="label" label="文章标签" />
+      <el-table-column min-width="180px" prop="sort" label="文章分类">
+        <template slot-scope="scope">
+          <el-tag v-for="item in scope.row.sorts" :key="item.id" type="danger" size="mini" style="margin-left: 4px">{{ item.name }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column min-width="180px" prop="label" label="文章标签">
+        <template slot-scope="scope">
+          <el-tag v-for="item in scope.row.labels" :key="item.id" type="info" size="mini" style="margin-left: 4px">{{ item.name }}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column min-width="180px" prop="comment" label="评论总数" />
       <el-table-column min-width="180px" prop="date" label="发表时间">
         <template slot-scope="scoped">
@@ -20,7 +28,7 @@
               编辑
             </el-button>
           </router-link>
-          <el-button type="text" @click="deleteArticle(scope.row.id)">
+          <el-button type="text" @click="deleteRow(scope.row.id)">
             删除
           </el-button>
         </template>
@@ -32,7 +40,7 @@
 </template>
 
 <script>
-import { getArticleList, getArticle, deleteArticle, addArticle, editArticle } from '@/api/article'
+import { getArticleList, deleteArticle } from '@/api/article'
 
 // import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -73,12 +81,13 @@ export default {
         }
       })
     },
-    deleteArticle(id) {
+    deleteRow(id) {
       this.listLoading = true
       deleteArticle(id).then(res => {
         if (res.result) {
-          this.list = res.data
           this.listLoading = false
+          this.$message.success('删除文章成功')
+          this.getArticleList()
         }
       })
     }

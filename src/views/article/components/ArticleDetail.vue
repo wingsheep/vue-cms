@@ -1,19 +1,21 @@
 <template>
   <div class="createPost-container">
-      <el-form ref="postForm" :model="postForm" :rules="rules">
-
-    <Sticky>
-      <div class="btns">
-        <CommentDropdown v-model="postForm.comment_disabled" />
-        <SourceUrlDropdown v-model="postForm.image_url" />
-        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
-          发布
-        </el-button>
-        <el-button v-loading="loading" type="warning" @click="draftForm">
-          暂存
-        </el-button>
-      </div>
-    </Sticky>
+    <el-form ref="postForm" :model="postForm" :rules="rules">
+      <Sticky>
+        <div class="btns">
+          <CommentDropdown v-model="postForm.comment_disabled" />
+          <SourceUrlDropdown v-model="postForm.image_url" />
+          <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="onSubmit">
+            发布
+          </el-button>
+          <el-button v-loading="loading" type="warning" @click="draftForm">
+            暂存
+          </el-button>
+          <el-button v-loading="loading" type="danger" @click="resetForm">
+            重置
+          </el-button>
+        </div>
+      </Sticky>
       <div class="createPost-main-container">
         <el-row>
           <el-col :span="24">
@@ -40,14 +42,14 @@
                 </el-col>
                 <el-col :xs="24" :lg="6" :md="12">
                   <el-form-item label-width="60px" label="标签:" prop="label">
-                    <el-select v-model="postForm.label" style="width: 100%" filterable default-first-option remote placeholder="请输入">
+                    <el-select v-model="postForm.label" style="width: 100%" multiple filterable default-first-option remote placeholder="请输入">
                       <el-option v-for="(item,index) in labelList" :key="item+index" :label="item.name" :value="item.id" />
                     </el-select>
                   </el-form-item>
                 </el-col>
                 <el-col :xs="24" :lg="6" :md="12">
                   <el-form-item label-width="60px" label="分类:" prop="sort">
-                    <el-select v-model="postForm.sort" style="width: 100%" filterable default-first-option remote placeholder="请输入">
+                    <el-select v-model="postForm.sort" style="width: 100%" multiple filterable default-first-option remote placeholder="请输入">
                       <el-option v-for="(item,index) in sortList" :key="item+index" :label="item.name" :value="item.id" />
                     </el-select>
                   </el-form-item>
@@ -65,10 +67,6 @@
         <el-form-item prop="content" style="margin-bottom: 30px;">
           <mavon-editor v-model="postForm.content" style="min-height:500px" />
         </el-form-item>
-
-        <!-- <el-form-item prop="image_uri" style="margin-bottom: 30px;">
-          <Upload v-model="postForm.image_uri" />
-        </el-form-item> -->
       </div>
     </el-form>
   </div>
@@ -89,6 +87,8 @@ const defaultForm = {
   title: '', // 文章题目
   content: '', // 文章内容
   description: '', // 文章摘要
+  label: [], // 标签
+  sort: [], // 分类
   image_url: 'https://cdn.jsdelivr.net/gh/Thawsoar/FigureBed@master/img/20200418224757.png', // 文章图片
   id: undefined,
   comment_disabled: false,
@@ -141,11 +141,16 @@ export default {
   },
   methods: {
     fetchData(id) {
-      getArticle(id).then(response => {
-        this.postForm = response.data
-        // this.setTagsViewTitle()
-        // set page title
-        this.setPageTitle()
+      getArticle(id).then(res => {
+        if (res.result) {
+          this.postForm = {
+            ...res.data,
+            author: res.data.user_id,
+            label: res.data.labels ? res.data.labels.map(_ => _.id) : [],
+            sort: res.data.sorts ? res.data.sorts.map(_ => _.id) : []
+          }
+          console.log(this.postForm)
+        }
       }).catch(err => {
         console.log(err)
       })
@@ -155,16 +160,16 @@ export default {
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
-    setPageTitle() {
-      const title = 'Edit Article'
-      document.title = `${title} - ${this.postForm.id}`
+    onSubmit() {
+      this.isEdit ? this.edit() : this.add()
     },
-    submitForm() {
+    add() {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
           const params = {
             ...this.postForm,
+            img_url: this.postForm.image_url,
             user_id: this.postForm.author
           }
           addArticle(params).then(res => {
@@ -184,6 +189,37 @@ export default {
           return false
         }
       })
+    },
+    edit() {
+      this.$refs.postForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          const params = {
+            ...this.postForm,
+            img_url: this.postForm.image_url,
+            user_id: this.postForm.author
+          }
+          editArticle(params).then(res => {
+            if (res.result) {
+              this.$notify({
+                title: '成功',
+                message: '编辑文章成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.postForm.status = 'published'
+            }
+            this.loading = false
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm() {
+      const id = this.$route.params && this.$route.params.id
+      this.fetchData(id)
     },
     draftForm() {
       if (this.postForm.content.length === 0 || this.postForm.title.length === 0) {
@@ -205,6 +241,7 @@ export default {
       getUserList(query).then(res => {
         if (res.data) {
           this.userList = res.data
+          this.postForm.author = res.data.length ? res.data[0].username : ''
         }
       })
     },
@@ -228,7 +265,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
-
 .createPost-container {
   position: relative;
   padding: 0px 45px 20px 50px;
@@ -266,5 +302,8 @@ export default {
     border-radius: 0px;
     border-bottom: 1px solid #bfcbd9;
   }
+}
+.markdown-body {
+  z-index: 0;
 }
 </style>
