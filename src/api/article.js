@@ -33,9 +33,11 @@ export function getArticle(id) {
   })
 }
 
-export function getArticleList() {
+export function getArticleList(params) {
+  console.log(params)
   return request({
     url: url,
-    method: 'get'
+    method: 'get',
+    params
   })
 }

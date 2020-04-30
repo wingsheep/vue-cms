@@ -35,18 +35,18 @@
       </el-table-column>
     </el-table>
 
-    <!-- <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" /> -->
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.offset" :limit.sync="listQuery.limit" @pagination="getArticleList" />
   </div>
 </template>
 
 <script>
 import { getArticleList, deleteArticle } from '@/api/article'
 
-// import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'ArticleList',
-  // components: { Pagination },
+  components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -63,7 +63,7 @@ export default {
       total: 0,
       listLoading: false,
       listQuery: {
-        page: 1,
+        offset: 1,
         limit: 20
       }
     }
@@ -74,9 +74,10 @@ export default {
   methods: {
     getArticleList() {
       this.listLoading = true
-      getArticleList().then(res => {
+      getArticleList(this.listQuery).then(res => {
         if (res.result) {
-          this.list = res.data
+          this.list = res.data.rows
+          this.total = res.data.count
           this.listLoading = false
         }
       })
