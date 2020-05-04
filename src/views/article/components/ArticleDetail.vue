@@ -4,7 +4,7 @@
       <Sticky>
         <div class="btns">
           <CommentDropdown v-model="postForm.comment_disabled" />
-          <SourceUrlDropdown v-model="postForm.image_url" />
+          <SourceUrlDropdown v-model="postForm.img_url" />
           <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="onSubmit">
             发布
           </el-button>
@@ -89,7 +89,7 @@ const defaultForm = {
   description: '', // 文章摘要
   label: [], // 标签
   sort: [], // 分类
-  image_url: 'https://cdn.jsdelivr.net/gh/Thawsoar/FigureBed@master/img/20200425144136.png', // 文章图片
+  img_url: 'https://cdn.jsdelivr.net/gh/Thawsoar/FigureBed@master/img/20200425144136.png', // 文章图片
   id: undefined,
   comment_disabled: false,
   date: new Date()
@@ -169,7 +169,7 @@ export default {
           this.loading = true
           const params = {
             ...this.postForm,
-            img_url: this.postForm.image_url,
+            img_url: this.postForm.img_url,
             user_id: this.postForm.author
           }
           addArticle(params).then(res => {
@@ -196,7 +196,7 @@ export default {
           this.loading = true
           const params = {
             ...this.postForm,
-            img_url: this.postForm.image_url,
+            img_url: this.postForm.img_url,
             user_id: this.postForm.author
           }
           editArticle(params).then(res => {
