@@ -8,9 +8,18 @@
       fit
       highlight-current-row
     >
-      <el-table-column prop="name" label="友链名称" />
-      <el-table-column prop="url" label="友链地址" />
-      <el-table-column prop="img_url" label="友链图片地址" />
+      <el-table-column prop="name" label="友链名称">
+        <template slot-scope="scope">
+          <el-button type="text">
+            <a :href="scope.row.url" target="_blank">{{ scope.row.name }}</a>
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column prop="img_url" label="友链图片地址">
+        <template slot-scope="scope">
+          <img style="width: 60px; height: 60px; border-radius: 50%" :src="scope.row.img_url" :alt="scope.row.img_url">
+        </template>
+      </el-table-column>
       <el-table-column prop="desc" label="友链描述" />
       <el-table-column min-width="100px" prop="state" label="启用状态">
         <template slot-scope="scope">
