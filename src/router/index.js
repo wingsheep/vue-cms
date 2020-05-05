@@ -116,7 +116,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/label/list',
     name: 'Label',
-    meta: { title: '标签管理', icon: 'label' },
+    meta: { title: '标签管理', icon: 'collection-tag' },
     children: [
       {
         path: 'list',
@@ -135,6 +135,34 @@ export const constantRoutes = [
         component: () => import('@/views/label/edit'),
         name: 'EditLabel',
         meta: { title: '编辑标签', noCache: true, activeMenu: '/label/edit' },
+        hidden: true
+      }
+    ]
+  },
+  {
+    path: '/friendlink',
+    component: Layout,
+    redirect: '/friendlink/list',
+    name: 'friendlink',
+    meta: { title: '友链管理', icon: 'link' },
+    children: [
+      {
+        path: 'list',
+        name: 'friendlinkList',
+        component: () => import('@/views/friendlink/list'),
+        meta: { title: '友链列表', icon: 'list' }
+      },
+      {
+        path: 'create',
+        component: () => import('@/views/friendlink/create'),
+        name: 'CreateFriendlink',
+        meta: { title: '新增友链', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/friendlink/edit'),
+        name: 'EditFriendlink',
+        meta: { title: '编辑标签', noCache: true, activeMenu: '/friendlink/edit' },
         hidden: true
       }
     ]
