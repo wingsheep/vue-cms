@@ -2,7 +2,7 @@
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules">
       <Sticky>
-        <div class="btns">
+        <el-card class="btns" :body-style="{padding: 0}">
           <CommentDropdown v-model="postForm.comment_disabled" />
           <SourceUrlDropdown v-model="postForm.img_url" />
           <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="onSubmit">
@@ -14,7 +14,7 @@
           <el-button v-loading="loading" type="danger" @click="resetForm">
             重置
           </el-button>
-        </div>
+        </el-card>
       </Sticky>
       <div class="createPost-main-container">
         <el-row>
@@ -267,8 +267,8 @@ export default {
 @import "~@/styles/mixin.scss";
 .createPost-container {
   position: relative;
-  padding: 0px 45px 20px 50px;
   .createPost-main-container {
+    padding: 0px 45px 20px 50px;
     .postInfo-container {
       position: relative;
       @include clearfix;
@@ -290,7 +290,8 @@ export default {
   .btns {
     width: 100%;
     text-align: right;
-    padding: 10px 0;
+    padding: 10px 40px;
+    background: transparent;
   }
 }
 

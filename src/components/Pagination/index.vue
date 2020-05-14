@@ -7,6 +7,7 @@
       :layout="layout"
       :page-sizes="pageSizes"
       :total="total"
+      :small="size"
       v-bind="$attrs"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -23,6 +24,10 @@ export default {
     total: {
       required: true,
       type: Number
+    },
+    small: {
+      type: Boolean,
+      default: false
     },
     page: {
       type: Number,
@@ -94,6 +99,7 @@ export default {
 .pagination-container {
   background: #fff;
   padding: 32px 16px;
+  text-align: right;
 }
 .pagination-container.hidden {
   display: none;
