@@ -97,7 +97,7 @@ const defaultForm = {
 
 export default {
   name: 'ArticleDetail',
-  components: { MDinput, Upload, Sticky, CommentDropdown, SourceUrlDropdown },
+  components: { MDinput, Sticky, CommentDropdown, SourceUrlDropdown },
   props: {
     isEdit: {
       type: Boolean,
