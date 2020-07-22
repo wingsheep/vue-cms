@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">我叫罗小黑</h3>
       </div>
 
       <el-form-item prop="username">
@@ -74,8 +74,10 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin1',
-        password: '123456'
+        // username: 'admin1',
+        // password: '123456'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -111,7 +113,7 @@ export default {
     githubLogin() {
       const config = {
         'oauth_uri': 'https://github.com/login/oauth/authorize',
-        'redirect_uri': 'http://localhost:9528/#/login',
+        'redirect_uri': 'https://admin.happyfly.top/#/login',
         'client_id': 'fcbd10e83056c315fe90'
       }
       window.location.href = `${config.oauth_uri}?client_id=${config.client_id}&redirect_uri=${config.redirect_uri}`
