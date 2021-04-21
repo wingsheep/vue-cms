@@ -13,7 +13,7 @@
         <el-input
           ref="username"
           v-model="loginForm.username"
-          placeholder="Username"
+          placeholder="用户名"
           name="username"
           type="text"
           tabindex="1"
@@ -30,7 +30,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="Password"
+          placeholder="密码"
           name="password"
           tabindex="2"
           auto-complete="on"
@@ -41,37 +41,33 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
-
-      <div class="tips">
-        <el-button type="text" @click="githubLogin">Github登录</el-button>
-      </div>
-
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button :loading="loading" type="danger" style="width:100%; margin-left:0" @click.native.prevent="githubLogin">Github登录</el-button>
     </el-form>
   </div>
 </template>
 
 <script>
 import { getGithubUserInfo } from '@/api/user.js'
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 import qs from 'qs'
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
+    // const validateUsername = (rule, value, callback) => {
+    //   if (!validUsername(value)) {
+    //     callback(new Error('Please enter the correct user name'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
+    // const validatePassword = (rule, value, callback) => {
+    //   if (value.length < 6) {
+    //     callback(new Error('The password can not be less than 6 digits'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
       loginForm: {
         // username: 'admin1',
@@ -80,8 +76,8 @@ export default {
         password: ''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+        password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
       },
       loading: false,
       passwordType: 'password',
@@ -160,6 +156,10 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  background: url('https://cdn.jsdelivr.net/gh/Thawsoar/FigureBed@master/img/20200425144136.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 100% 100%;
   .el-input {
     display: inline-block;
     height: 47px;
@@ -181,7 +181,10 @@ $cursor: #fff;
       }
     }
   }
-
+  .el-form {
+    background: #00000060;
+    border-radius: 4px;
+  }
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
@@ -206,9 +209,10 @@ $light_gray:#eee;
     position: relative;
     width: 520px;
     max-width: 100%;
-    padding: 160px 35px 0;
+    padding: 30px;
     margin: 0 auto;
     overflow: hidden;
+    margin-top: 200px;
   }
 
   .tips {
