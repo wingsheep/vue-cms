@@ -17,7 +17,7 @@ git add *
 
 git commit -m 'Travis CI Auto Builder Deploy'
 
-git push --force --quiet "https://${access_token}@github.com/Thawsoar/vue-cms" master:deploy
+git push -f https://${access_token}@github.com/Thawsoar/vue-cms.git master:deploy
 
 ssh root@47.105.40.207 'cd ~/../data/www/middle && git fetch --all && git reset --hard origin/deploy && git pull'
 
