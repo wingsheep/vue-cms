@@ -21,7 +21,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-button type="primary" size="small">
+            <el-button type="primary" size="small" @click="getArticleList">
               查询
             </el-button>
             <el-button type="warning" size="small">
@@ -95,7 +95,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column min-width="160px" prop="op" label="操作" fixed="right">
+        <el-table-column min-width="280px" prop="op" label="操作" fixed="right">
           <template slot-scope="scope">
             <router-link :to="'/article/edit/'+scope.row.id">
               <el-button type="text" icon="el-icon-edit">
@@ -106,23 +106,30 @@
             <el-button type="text" icon="el-icon-delete" @click="deleteRow(scope.row.id)">
               删除
             </el-button>
+            <el-divider direction="vertical" />
+            <el-button type="text" icon="el-icon-s-comment" @click="commentRow(scope.row)">
+              评论管理
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
 
       <pagination v-show="total>0" :total="total" :page.sync="listQuery.offset" :limit.sync="listQuery.limit" @pagination="getArticleList" />
     </el-card>
+    <el-dialog v-if="dialogVisible" :title="`评论管理(${ currentRow.title })`" :visible.sync="dialogVisible">
+      <Comment :id="commentId" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import { getArticleList, deleteArticle } from '@/api/article'
-
+import Comment from '../comment'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'ArticleList',
-  components: { Pagination },
+  components: { Pagination, Comment },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -135,6 +142,9 @@ export default {
   },
   data() {
     return {
+      currentRow: {},
+      commentId: '',
+      dialogVisible: false,
       size: 'medium',
       form: {
 
@@ -152,6 +162,11 @@ export default {
     this.getArticleList()
   },
   methods: {
+    commentRow(row) {
+      this.commentId = row.id
+      this.currentRow = JSON.parse(JSON.stringify(row))
+      this.dialogVisible = true
+    },
     getArticleList() {
       this.listLoading = true
       getArticleList(this.listQuery).then(res => {

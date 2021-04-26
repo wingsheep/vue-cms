@@ -1,5 +1,14 @@
 language: node_js
-node_js: 10
-script: npm run test
-notifications:
-  email: false
+sudo: required
+node_js:
+- lts/*
+cache:
+  directories:
+  - node_modules
+before_install:
+- openssl aes-256-cbc -K $encrypted_be94fd40f0c4_key -iv $encrypted_be94fd40f0c4_iv
+  -in deploy.sh.enc -out deploy.sh -d
+- chmod u+x *.sh
+script:
+- sh ./deploy.sh
+branch: master

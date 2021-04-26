@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+    <el-table v-loading="listLoading" :data="list" fit highlight-current-row style="width: 100%">
       <el-table-column min-width="180px" prop="content" label="评论内容" />
       <el-table-column min-width="180px" prop="user_nickname" label="用户名" />
       <el-table-column min-width="180px" prop="user_email" label="用户邮箱" />
       <el-table-column min-width="180px" prop="user_url" label="用户网站" />
       <el-table-column min-width="180px" prop="like_count" label="点赞数量" />
-      <el-table-column min-width="180px" prop="title" label="评论文章" />
+      <el-table-column v-if="!id" min-width="180px" prop="title" label="评论文章" />
       <el-table-column min-width="100px" prop="op" label="操作">
         <template slot-scope="scope">
           <el-button type="text" @click="deleteRow(scope.row.id)">
@@ -38,6 +38,12 @@ export default {
       return statusMap[status]
     }
   },
+  props: {
+    id: {
+      type: String,
+      default: ''
+    }
+  },
   data() {
     return {
       list: null,
@@ -55,7 +61,11 @@ export default {
   methods: {
     getCommentList() {
       this.listLoading = true
-      getCommentList(this.listQuery).then(res => {
+      const params = {
+        ...this.listQuery,
+        id: this.id
+      }
+      getCommentList(params).then(res => {
         if (res.result) {
           this.list = res.data.rows
           this.total = res.data.count
