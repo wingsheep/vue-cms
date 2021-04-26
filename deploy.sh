@@ -18,7 +18,7 @@ git config user.name "陶翔"
 git config user.email "thawsoar@gmail.com"
 git commit -m 'Travis CI Auto Builder Deploy'
 
-git push --force --quiet "https://${GH_TOKEN}@github.com/Thawsoar/vue-cms" master:deploy
+git push --force --quiet "https://${access_token}@github.com/Thawsoar/vue-cms" master:deploy
 
 ssh root@47.105.40.207 'cd ~/../data/www/middle && git fetch --all && git reset --hard origin/deploy && git pull'
 
