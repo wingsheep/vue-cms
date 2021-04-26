@@ -13,12 +13,16 @@ cd ./dist
 # echo 'www.example.com' > CNAME
 
 git init
+git config user.name "taoxiang"
+git config user.email "thawsoar@gmail.com"
 git add *
 
 git commit -m 'Travis CI Auto Builder Deploy'
-
-git push -f https://${access_token}@github.com/Thawsoar/vue-cms.git master:deploy
+echo ${access_token}
+git push --force --quiet https://${access_token}@github.com/Thawsoar/vue-cms.git master:deploy
 
 ssh root@47.105.40.207 'cd ~/../data/www/middle && git fetch --all && git reset --hard origin/deploy && git pull'
 
 cd -
+
+
