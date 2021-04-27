@@ -23,5 +23,3 @@ git push --force --quiet https://${access_token}@github.com/Thawsoar/vue-cms.git
 ssh root@47.105.40.207 'cd ~/../data/www/middle && git fetch --all && git reset --hard origin/deploy && git pull'
 
 cd -
-
-
