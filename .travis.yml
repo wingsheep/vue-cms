@@ -12,3 +12,6 @@ before_install:
 script:
 - sh ./deploy.sh
 branch: master
+env:
+    global:
+        - GH_REF: github.com/Thawsoar/vue-cms.git
