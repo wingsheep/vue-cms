@@ -18,8 +18,10 @@ git init
 git add *
 
 git commit -m 'Travis CI Auto Builder Deploy'
-git push --force --quiet git@github.com:Thawsoar/vue-cms.git master:deploy
+# git push --force --quiet git@github.com:Thawsoar/vue-cms.git master:deploy
+git push -f https://${access_token}@github.com/Thawsoar/vue-cms.git master:deploy
 
-# ssh root@47.105.40.207 'cd ~/../data/www/middle && git fetch --all && git reset --hard origin/deploy && git pull'
+echo 'test'
+ssh root@47.105.40.207 'cd ~/../data/www/middle && git fetch --all && git reset --hard origin/deploy && git pull'
 
 cd -
