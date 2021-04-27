@@ -1,4 +1,13 @@
 #!/usr/bin/env sh
+###
+ # @Author: taoxiang
+ # @Date: 2021-04-27 14:14:59
+ # @LastEditTime: 2021-04-27 14:14:59
+ # @LastEditors: taoxiang
+ # @Description: 
+ # @FilePath: /blog/admin/deploy.sh
+ # 打工人,打工魂,打工都是人上人
+### 
 
 # 确保脚本抛出遇到的错误
 set -e

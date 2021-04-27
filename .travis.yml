@@ -9,12 +9,12 @@ addons:
   ssh_known_hosts:
   - 47.105.40.207
 before_install:
-- openssl aes-256-cbc -K $encrypted_be94fd40f0c4_key -iv $encrypted_be94fd40f0c4_iv
-  -in deploy.sh.enc -out deploy.sh -d
+- openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv
+  -in deploy_rsa.enc -out deploy_rsa -d
 - chmod u+x *.sh
 script:
 - sh ./deploy.sh
 branch: master
 env:
-    global:
-        - GH_REF: github.com/Thawsoar/vue-cms.git
+  global:
+  - GH_REF: github.com/Thawsoar/vue-cms.git
