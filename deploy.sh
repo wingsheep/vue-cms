@@ -21,6 +21,5 @@ git commit -m 'Travis CI Auto Builder Deploy'
 # git push --force --quiet git@github.com:Thawsoar/vue-cms.git master:deploy
 git push -f -q https://${GH_TOKEN}@${GH_REF} master:deploy
 
-ssh -o "StrictHostKeyChecking no" root@47.105.40.207 'cd /data/www/middle && rm -rf ./* && git clone -b deploy https://github.com/Thawsoar/vue-cms.git && mv vue-cms dist'
 
 cd -

@@ -18,6 +18,9 @@ before_install:
 - chmod u+x *.sh
 script:
 - sh ./deploy.sh
+
+after_success:
+  ssh -o StrictHostKeyChecking=no root@47.105.40.207 'cd /data/www/middle && rm -rf ./* && git clone -b deploy git@github.com:Thawsoar/vue-cms.git && mv vue-cms dist'
 env:
   global:
   - GH_REF: github.com/Thawsoar/vue-cms.git
