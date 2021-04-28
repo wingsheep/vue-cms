@@ -5,6 +5,9 @@ node_js:
 cache:
   directories:
   - node_modules
+branches:
+  only:
+  - master
 addons:
   ssh_known_hosts:
   - 47.105.40.207
@@ -15,7 +18,7 @@ before_install:
 - chmod u+x *.sh
 script:
 - sh ./deploy.sh
-branch: master
+
 env:
   global:
   - GH_REF: github.com/Thawsoar/vue-cms.git
