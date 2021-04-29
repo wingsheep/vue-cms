@@ -18,7 +18,6 @@ git init
 git add *
 
 git commit -m 'Travis CI Auto Builder Deploy'
-# git push --force --quiet git@github.com:Thawsoar/vue-cms.git master:deploy
 git push -f -q https://${GH_TOKEN}@${GH_REF} master:deploy
 
 
