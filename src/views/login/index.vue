@@ -42,7 +42,7 @@
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:15px;" @click.native.prevent="handleLogin">登录</el-button>
-      <el-button :loading="loading" type="danger" style="width:100%; margin-left:0" @click.native.prevent="githubLogin">Github登录</el-button>
+      <!-- <el-button :loading="loading" type="danger" style="width:100%; margin-left:0" @click.native.prevent="githubLogin">Github登录</el-button> -->
     </el-form>
   </div>
 </template>
